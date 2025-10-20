@@ -1,0 +1,22 @@
+{
+  "name": "path-corrector",
+  "version": "1.0.0",
+  "description": "Corrige rutas de archivos relativas a absolutas usando el directorio home del usuario",
+  "main": "pathCorrector.js",
+  "scripts": {
+    "start": "node example.js",
+    "test": "node example.js"
+  },
+  "keywords": [
+    "path",
+    "file",
+    "correction",
+    "home",
+    "directory"
+  ],
+  "author": "llamp",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
