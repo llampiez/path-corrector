@@ -24,8 +24,21 @@ function findFilesRecursive(fileName, searchDir) {
           const subResults = findFilesRecursive(fileName, fullPath);
           results.push(...subResults);
         } else if (entry.isFile()) {
-          // Verificar si el nombre coincide o si la ruta termina con el patrón buscado
-          if (entry.name === fileName || fullPath.endsWith(fileName)) {
+          // Normalizar las rutas para comparación
+          const normalizedFullPath = fullPath.split(path.sep).join('/');
+          const normalizedFileName = fileName.split(path.sep).join('/');
+
+          // Verificar si:
+          // 1. El nombre del archivo coincide exactamente
+          // 2. O si la ruta completa termina con el patrón buscado,
+          //    asegurando que sea una coincidencia de ruta completa (con separador antes)
+          const endsWithPattern = normalizedFullPath.endsWith('/' + normalizedFileName) ||
+                                   normalizedFullPath.endsWith(normalizedFileName);
+          const isExactPathMatch = endsWithPattern &&
+                                   (normalizedFullPath === normalizedFileName ||
+                                    normalizedFullPath.endsWith('/' + normalizedFileName));
+
+          if (entry.name === path.basename(fileName) && isExactPathMatch) {
             results.push(fullPath);
           }
         }
