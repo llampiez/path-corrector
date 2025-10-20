@@ -49,9 +49,22 @@ npm start
 
 ## Cómo Funciona
 
-### Etapa 1: Búsqueda Directa
+### Etapa 0: Verificación de Ruta Absoluta
 
-La función primero intenta combinar la ruta proporcionada con el directorio home del usuario:
+Si el usuario proporciona una ruta absoluta (que empieza con `C:\` en Windows o `/` en Unix), la función simplemente verifica si el archivo existe:
+
+```javascript
+// Usuario proporciona: "C:\Users\llamp\Desktop\archivo.txt"
+// Se verifica: ¿Existe ese archivo exactamente?
+// ✅ Si existe → Retorna éxito
+// ❌ Si no existe → Retorna error
+```
+
+Esta etapa evita búsquedas innecesarias cuando el usuario ya conoce la ruta exacta.
+
+### Etapa 1: Búsqueda Directa (para rutas relativas)
+
+La función intenta combinar la ruta proporcionada con el directorio home del usuario:
 
 ```javascript
 // Usuario proporciona: "Desktop/archivo.txt"
@@ -62,7 +75,7 @@ La función primero intenta combinar la ruta proporcionada con el directorio hom
 
 Si el archivo existe en esa ubicación, retorna inmediatamente con éxito.
 
-### Etapa 2: Búsqueda Recursiva
+### Etapa 2: Búsqueda Recursiva (para rutas relativas)
 
 Si no se encuentra en la búsqueda directa, busca recursivamente en todo el directorio home:
 

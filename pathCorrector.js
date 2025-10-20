@@ -57,13 +57,31 @@ function findFilesRecursive(fileName, searchDir) {
 }
 
 /**
- * Intenta corregir una ruta de archivo relativa o ambigua a una ruta absoluta única
- * dentro del directorio home del usuario.
+ * Intenta corregir una ruta de archivo relativa o ambigua a una ruta absoluta única.
  *
- * @param {string} filePath - La ruta del archivo a corregir
+ * Si la ruta ya es absoluta, simplemente verifica que exista.
+ * Si la ruta es relativa, busca dentro del directorio home del usuario.
+ *
+ * @param {string} filePath - La ruta del archivo a corregir (puede ser absoluta o relativa)
  * @returns {Object} Resultado con formato { success: boolean, correctedPath?: string, error?: string }
  */
 function correctPath(filePath) {
+  // ETAPA 0: Verificar si la ruta ya es absoluta
+  // Si el usuario proporciona una ruta absoluta, solo verificar que existe
+  if (path.isAbsolute(filePath)) {
+    if (fs.existsSync(filePath)) {
+      return {
+        success: true,
+        correctedPath: filePath
+      };
+    } else {
+      return {
+        success: false,
+        error: `Archivo no encontrado: '${filePath}' no existe.`
+      };
+    }
+  }
+
   // Obtener el directorio home del usuario de forma cross-platform
   const homeDir = os.homedir();
 
